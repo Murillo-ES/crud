@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ProductRequest extends FormRequest
 {
@@ -21,8 +23,29 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        if ($this->isMethod('put')) {
+            return [
+                'name' => 'required|string|max:255',
+                'description' => 'string',
+                'price' => 'required|numeric|min:0.99'
+            ];
+        }
+
+        if ($this->isMethod('patch')) {
+            return [
+                'name' => 'string|max:255',
+                'description' => 'string',
+                'price' => 'numeric|min:0.99'
+            ];
+        }
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'status' => 'error',
+           'message' => 'Missing variable.',
+           'errors' => $validator->errors() 
+        ], 422));
     }
 }
