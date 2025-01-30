@@ -7,7 +7,7 @@ use App\Models\Product;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\ProductRequest;
 
-class ProductAPI extends Controller
+class ProductAPIController extends Controller
 {
     public function index(Request $request)
     {
