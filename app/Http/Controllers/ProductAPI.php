@@ -8,15 +8,66 @@ use App\Http\Resources\ProductResource;
 
 class ProductAPI extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $products = Product::query();
+
+        if ($request->has('minPrice')) {
+            $products->where('price', '>=', $request->minPrice);
+        }
+
+        if ($request->has('maxPrice')) {
+            $products->where('price', '<=', $request->maxPrice);
+        }
+
+        // MUDAR
+
+        if ($request->has('asc')) {
+            $products->orderBy('price');
+        }
+
+        if ($request->has('desc')) {
+            $products->orderByDesc('price');
+        }
+
+        $products = $products->get();
 
         return ProductResource::collection($products);
     }
 
-    public function store($name, $price, $description='No description')
+    public function show($id)
     {
+        $product = Product::where('id', $id)->first();
+
+        return new ProductResource($product);
+    }
+
+    public function store(Request $request)
+    {
+        // MUDAR
+
+        if (!$request->has('name')) {
+            return response()->json([
+                'message' => 'name variable is required.'
+            ]);
+        }
+
+        if (!$request->has('price')) {
+            return response()->json([
+                'message' => 'price variable is required.'
+            ]);
+        }
+
+        if ($request->price < '0.99') {
+            return response()->json([
+                'message' => 'price variable must be greater than or equal to 0.99.'
+            ]);
+        }
+
+        $name = $request->query('name');
+        $description = $request->has('description') ? $request->query('description') : 'No description.';
+        $price = $request->query('price');
+
         $product = Product::firstOrNew(
             ['name' => $name],
             ['description' => $description, 'price' => floatval($price)]
@@ -27,126 +78,60 @@ class ProductAPI extends Controller
                 'response' => 'Product already exists.',
                 'id' => $product->id
             ]);
-        } else {
-            $product->save();
-
-            return response()->json([
-                'response' => 'Product created succesfully!',
-                'id' => $product->id
-            ]);
         }
-    }
 
-    public function showById($id)
-    {
-        $product = Product::where('id', $id)->first();
-
-        return new ProductResource($product);
-    }
-
-    public function showByName($name)
-    {
-        $product = Product::where('name', $name)->first();
-
-        return new ProductResource($product);
-    }
-
-    public function showByPrice($price)
-    {
-        $products = Product::where('price', $price)->get();
-
-        return ProductResource::collection($products);
-    }
-
-    public function updateNameById($id, $newName)
-    {
-        $product = Product::where('id', $id)->first();
-
-            $product->update([
-                'name' => $newName
-            ]);
-
-        return new ProductResource($product);
-    }
-
-    public function updateNameByName($name, $newName)
-    {
-        $product = Product::where('name', $name)->first();
-
-            $product->update([
-                'name' => $newName
-            ]);
-
-        return new ProductResource($product);
-    }
-
-    public function updateDescriptionById($id, $newDescription)
-    {
-        $product = Product::where('id', $id)->first();
-
-            $product->update([
-                'description' => $newDescription
-            ]);
-
-        return new ProductResource($product);
-    }
-
-    public function updateDescriptionByName($name, $newDescription)
-    {
-        $product = Product::where('name', $name)->first();
-
-            $product->update([
-                'description' => $newDescription
-            ]);
-
-        return new ProductResource($product);
-    }
-
-    public function updatePriceById($id, $newPrice)
-    {
-        $product = Product::where('id', $id)->first();
-
-            $product->update([
-                'price' => floatval($newPrice)
-            ]);
-
-        return new ProductResource($product);
-    }
-
-    public function updatePriceByName($name, $newPrice)
-    {
-        $product = Product::where('name', $name)->first();
-
-            $product->update([
-                'price' => floatval($newPrice)
-            ]);
-
-        return new ProductResource($product);
-    }
-
-    public function destroyById($id)
-    {
-        $product = Product::where('id', $id)->first();
-
-        $productId = $product->id;
-
-        $product->delete();
+        $product->save();
 
         return response()->json([
-            'response' => "Product with ID $productId deleted succesfully!"
+            'response' => 'Product created succesfully!',
+            'id' => $product->id
         ]);
     }
 
-    public function destroyByName($name)
+    public function update($id, Request $request)
     {
-        $product = Product::where('name', $name)->first();
+        if(empty($request->query())) {
+            return response()->json([
+                'message' => "No changes made to product ID #$id."
+            ]);
+        }
 
-        $productName = $product->name;
+        $targetProduct = Product::where('id', $id)->first();
+
+        // MUDAR
+
+        if ($request->has('newName') && $request->newName != $targetProduct->name) {
+            $targetProduct->update([
+                'name' => $request->newName
+            ]);
+        }
+
+        if ($request->has('newDescription') && $request->newDescription != $targetProduct->description) {
+            $targetProduct->update([
+                'description' => $request->newDescription
+            ]);
+        }
+
+        if ($request->has('newPrice') && $request->newPrice != $targetProduct->price) {
+            $targetProduct->update([
+                'price' => $request->newPrice
+            ]);
+        }
+
+        return response()->json([
+            'message' => "Product ID #$id updated succesfully.",
+            'updatedProduct' => new ProductResource($targetProduct)
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $product = Product::where('id', $id)->firstOrFail();
 
         $product->delete();
 
         return response()->json([
-            'response' => "Product '$productName' deleted succesfully!"
+            'response' => "Product with ID $id deleted succesfully!"
         ]);
     }
 }
