@@ -28,6 +28,8 @@
                 <input type="text" name="description" id="description"><br>
                 <label for="price"><strong>Preço:</strong></label>
                 <input type="number" name="price" id="price" step="0.01" min="0"><br>
+                <label for="stock"><strong>Quantidade Disponível:</strong></label>
+                <input type="number" name="stock" id="stock" min="1" max="999" value="1">
                 <input type="submit" value="Registrar Produto">
             <form>
         </div>

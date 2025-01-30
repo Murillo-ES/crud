@@ -34,7 +34,7 @@ class ProductAPIController extends Controller
 
     public function show($id)
     {
-        $product = Product::where('id', $id)->first();
+        $product = Product::where('id', $id)->firstOrFail();
 
         return new ProductResource($product);
     }
@@ -44,10 +44,15 @@ class ProductAPIController extends Controller
         $data = $request->validated();
 
         $data['description'] = $data['description'] ?? 'No description.';
+        $data['stock'] = $data['stock'] ?? '1';
 
         $product = Product::firstOrNew(
             ['name' => $data['name']],
-            ['description' => $data['description'], 'price' => floatval($data['price'])]
+            [
+                'description' => $data['description'],
+                'price' => floatval($data['price']),
+                'stock' => $data['stock']
+            ]
         );
 
         if ($product->exists) {

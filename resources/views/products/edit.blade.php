@@ -8,7 +8,8 @@
 
 <div class="py-12">
     <a href="{{route('products.index')}}"><strong>Produtos</strong></a><br>
-    <a href="{{route('products.create')}}"><strong>Criar Produto</strong></a>
+    <a href="{{route('cart.index')}}"><strong>Carrinho</strong></a><br>
+    <a href="{{route('products.show', $product->id)}}"><strong>Voltar</strong></a>
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 text-black">
@@ -29,7 +30,9 @@
                 <label for="description"><strong>Descrição:</strong></label>
                 <input type="text" name="description" id="description" value="{{$product->description}}"><br>
                 <label for="price"><strong>Preço:</strong></label>
-                <input type="number" name="price" id="price" step="0.01" min="0", value="{{$product->price}}"><br>
+                <input type="number" name="price" id="price" step="0.01" min="0" value="{{$product->price}}"><br>
+                <label for="stock"><strong>Quantidade Disponível:</strong></label>
+                <input type="number" name="stock" id="stock" min="0" max="999" value="{{$product->stock}}"><br>
                 <input type="submit" value="Atualizar Produto">
             <form>
         </div>

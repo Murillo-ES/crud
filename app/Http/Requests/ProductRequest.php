@@ -27,7 +27,8 @@ class ProductRequest extends FormRequest
             return [
                 'name' => 'required|string|max:255',
                 'description' => 'string',
-                'price' => 'required|numeric|min:0.99'
+                'price' => 'required|numeric|min:0.99',
+                'stock' => 'numeric|min:1|max:999'
             ];
         }
 
@@ -35,7 +36,8 @@ class ProductRequest extends FormRequest
             return [
                 'name' => 'string|max:255',
                 'description' => 'string',
-                'price' => 'numeric|min:0.99'
+                'price' => 'numeric|min:0.99',
+                'stock' => 'numeric|min:0|max:999'
             ];
         }
     }

@@ -31,14 +31,11 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $name = Str::title($request->input('name'));
-        $description = $request->input('description');
-        $price = $request->input('price');
-
         Product::create([
-            'name' => $name,
-            'description' => $description,
-            'price' => $price
+            'name' => Str::title($request->input('name')),
+            'description' => $request->input('description'),
+            'price' => $request->input('price'),
+            'stock' => $request->input('stock')
         ]);
 
         return redirect()->route('products.index')->with('Sucesso!', 'Produto criado com sucesso!');
@@ -65,14 +62,11 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $name = $request->name;
-        $description = $request->description;
-        $price = $request->price;
-
         $product->update([
-            'name' => $name,
-            'description' => $description,
-            'price' => $price
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock' => $request->stock
         ]);
 
         return redirect()->route('products.index')->with('Sucesso!', 'Produto atualizado com sucesso!');
