@@ -12,11 +12,14 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $sort = $request->query('sort', 'price');
+        $order = $request->query('order', 'asc');
 
-        return view('products.index', compact('products'));
+        $products = Product::orderBy($sort, $order)->get();
+
+        return view('products.index', compact('products', 'sort', 'order'));
     }
 
     /**

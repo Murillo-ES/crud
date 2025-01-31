@@ -24,23 +24,25 @@
             <table class="min-w-full table-auto border-collapse border border-gray-300 dark:border-gray-600">
                 <thead>
                     <tr>
-                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Nome</th>
-                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Descrição</th>
-                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Quantidade</th>
-                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Preço Total</th>
-                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Ações</th>
+                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black" style="text-align: center">Nome</th>
+                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black" style="text-align: center">Descrição</th>
+                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black" style="text-align: center">Quantidade</th>
+                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black" style="text-align: center">Preço Total</th>
+                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black" style="text-align: center">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($items as $item)
                         <tr>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black" style="text-align: center">
                                 <a href="{{route('products.index', $item->id)}}"><strong>{{$item->name}}</strong></a><br>
                             </td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">{{ $item->attributes->description }}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">{{ $item->quantity }}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">R$ {{ $item->getPriceSum() }}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black" style="text-align: center">{{ $item->attributes->description }}</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black" style="text-align: center">{{ $item->quantity }}</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black" style="text-align: center">
+                                R$ {{ number_format($item->getPriceSum(), 2, ',', '.') }}
+                            </td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black" style="text-align: center">
                                 <form action="{{route('cart.removeProduct')}}" method="POST">
                                     @csrf
                                     <input type="hidden" name="id" value="{{$item->id}}">
@@ -53,7 +55,7 @@
                     @endforeach
                 </tbody>
             </table>
-            <strong>Valor total da compra:</strong> {{Cart::getTotal()}}
+            <strong>Valor total da compra:</strong> R$ {{number_format(Cart::getTotal(), 2, ',', '.')}}
             <form action="{{route('cart.clear')}}" method="POST">
                 @csrf
                 @foreach ($items as $item)
