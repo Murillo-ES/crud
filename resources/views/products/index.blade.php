@@ -19,7 +19,8 @@
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 text-black">
             <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Produtos</h3>
             <a href="{{route('products.create')}}"><strong>Criar Produto</strong></a><br>
-            <a href="{{route('cart.index')}}"><strong>Carrinho</strong></a>
+            <a href="{{route('cart.index')}}"><strong>Carrinho</strong></a><br>
+            <a href="{{route('products.exportToCSV')}}"><strong>Exportar Produtos (CSV)</strong></a>
             <br>
 
             <h5>Produtos disponíveis</h5>

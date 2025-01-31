@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Cart')
+@section('title', 'Seu Carrinho')
    
 @section('content')
   
@@ -17,8 +17,9 @@
             @endif
 
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 text-black">
-            <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Cart</h3>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Seu Carrinho</h3>
             <a href="{{route('products.index')}}"><strong>Produtos</strong></a><br>
+            <a href="{{route('cart.exportToCSV')}}"><strong>Exportar Carrinho (CSV)</strong></a>
             <table class="min-w-full table-auto border-collapse border border-gray-300 dark:border-gray-600">
                 <thead>
                     <tr>
@@ -52,6 +53,20 @@
                 </tbody>
             </table>
             <strong>Valor total da compra:</strong> {{Cart::getTotal()}}
+            <form action="{{route('cart.clear')}}" method="POST">
+                @csrf
+                @foreach ($items as $item)
+                    <input type="hidden" name="idArray[]" value="{{$item->id}}">
+                @endforeach
+                <button>Esvaziar Carrinho</button>
+            </form>
+            <form action="{{route('cart.checkout')}}" method="POST">
+                @csrf
+                @foreach ($items as $item)
+                    <input type="hidden" name="idArray[]" value="{{$item->id}}">
+                @endforeach
+                <button>Finalizar Compra</button>
+            </form>
         </div>
     </div>
 </div>

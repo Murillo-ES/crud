@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ProductController extends Controller
 {
@@ -80,5 +82,24 @@ class ProductController extends Controller
         $product->delete();
 
         return redirect()->route('products.index')->with('Sucesso!', 'Produto removido com sucesso!');
+    }
+
+    public function exportToCSV()
+    {
+        return response()->streamDownload(function(){
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, ['ID', 'Name', 'Description', 'Price', 'Stock']);
+
+            $productsList = Product::select(['id', 'name', 'description', 'price', 'stock'])->get();
+
+            foreach ($productsList as $product) {
+                fputcsv($handle, $product->toArray());
+            }
+
+            fclose($handle);
+        },  'products.csv', [
+            'Content-Type' => 'text/csv',
+        ]);
     }
 }

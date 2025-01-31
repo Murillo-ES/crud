@@ -15,6 +15,15 @@
                     </div>
                 </div>
             @endif
+
+            @if ($mensagem = Session::get('Falha na operação!'))
+                <div class="card green">
+                    <div class="card-content white-text">
+                        <span class="card-title">Falha na operação!</span>
+                        <p>{{ $mensagem }}</p>
+                    </div>
+                </div>
+            @endif
             
             <a href="{{route('products.index')}}"><strong>Produtos</strong></a><br>
             <a href="{{route('cart.index')}}"><strong>Carrinho</strong></a><br>
