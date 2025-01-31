@@ -17,7 +17,7 @@
             @endif
 
             @if ($mensagem = Session::get('Falha na operação!'))
-                <div class="card green">
+                <div class="card red">
                     <div class="card-content white-text">
                         <span class="card-title">Falha na operação!</span>
                         <p>{{ $mensagem }}</p>
@@ -25,31 +25,51 @@
                 </div>
             @endif
             
-            <a href="{{route('products.index')}}"><strong>Produtos</strong></a><br>
-            <a href="{{route('cart.index')}}"><strong>Carrinho</strong></a><br>
-            <a href="{{route('products.edit', $product->id)}}">Editar Produto</a>
-
-            <h4><strong>Nome:</strong> {{$product->name}}</h4><br>
-            <p><strong>Descrição:</strong> {{$product->description}}</p><br>
-            <p><strong>Preço:</strong> R$ {{$product->price}}</p><br>
-            <p><strong>Quantidade Disponível:</strong> {{$product->stock}}</p><br>
-            @if ($product->stock > 0)
-                <form action="{{route('cart.addProduct')}}" method="POST">
-                    @csrf
-                    <label for="quantity"><strong>Quantidade:</strong></label>
-                    <input type="number" name="quantity" id="quantity" min="1" max="{{$product->stock}}">
-                    <input type="hidden" name="id" value="{{$product->id}}">
-                    <button>Adicionar ao carrinho</button>
-                </form>
-            @else
-                <p>Este produto não está disponível para compra no momento!</p>
-            @endif
-            <br>
-            <form action="{{route('products.destroy', $product->id)}}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button class="btn-floating waves-effect waves-light green">Excluir Produto</button>
-            </form>
+            <div class="row">
+                <div class="col s12 m6">
+                  <div class="card blue lighten-1">
+                    <div class="card-content grey-text text-lighten-4">
+                        <span class="card-title"><strong>{{$product->name}}</strong></span>
+                        <p>{{$product->description}}</p>
+                        <p><strong>Preço: </strong>R$ {{ number_format($product->price, 2, ',', '.') }}</p>
+                        <p><strong>Quantidade Disponível: </strong>{{$product->stock}}</p>
+                        @if ($product->stock > 0)
+                            <form action="{{route('cart.addProduct')}}" method="POST">
+                                @csrf
+                                <div class="input-field inline">
+                                    <label for="quantity" class="grey-text text-lighten-4"><strong>Quantidade para comprar:</strong></label>
+                                    <input type="number" name="quantity" class="grey-text text-lighten-4" id="quantity" min="1" max="{{$product->stock}}" size="3">
+                                    <input type="hidden" name="id" value="{{$product->id}}">
+                                    <button class="btn waves-effect waves-light green accent-3" type="submit" name="action">Adicionar ao carrinho
+                                        <i class="material-icons right">add_shopping_cart</i>
+                                    </button>
+                                </div>
+                            </form>
+                        @else
+                            <p>Este produto não está disponível para compra no momento!</p>
+                        @endif
+                        <br>
+                        <div class="divider"></div>
+                        <br>
+                        <p><strong>Opções Adicionais</strong></p>
+                        <form action="{{route('products.destroy', $product->id)}}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn waves-effect waves-light red accent-4">Excluir Produto
+                                <i class="material-icons right">delete</i>
+                            </button>
+                        </form>
+                        <br>
+                        <form action="{{route('products.edit', $product->id)}}" method="GET">
+                            @csrf
+                            <button class="btn waves-effect waves-light yellow accent-3 black-text">Editar Produto
+                                <i class="material-icons right">edit</i>
+                            </button>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
     </div>
 </div>

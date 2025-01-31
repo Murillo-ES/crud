@@ -23,4 +23,6 @@ Route::name('cart.')->group(function(){
 Route::get('products/exportToCSV', [ProductController::class, 'exportToCSV'])->name('products.exportToCSV');
 Route::get('products/exportToPDF', [ProductController::class, 'exportToPDF'])->name('products.exportToPDF');
 
+Route::get('products/search', [ProductController::class, 'search'])->name('products.search');
+
 Route::resource('products', ProductController::class);

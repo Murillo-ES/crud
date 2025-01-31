@@ -7,8 +7,6 @@
 <h1>Criação de Produto</h1>
 
 <div class="py-12">
-    <a href="{{route('products.index')}}"><strong>Produtos</strong></a>
-
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 text-black">
             @if ($mensagem = Session::get('Sucesso!'))
@@ -30,8 +28,13 @@
                 <input type="number" name="price" id="price" step="0.01" min="0"><br>
                 <label for="stock"><strong>Quantidade Disponível:</strong></label>
                 <input type="number" name="stock" id="stock" min="1" max="999" value="1">
-                <input type="submit" value="Registrar Produto">
+                <button class="btn waves-effect waves-light green" type="submit" name="action">Criar Produto
+                    <i class="material-icons right">add_circle</i>
+                </button>
             <form>
+            <a href="{{route('products.index')}}" class="waves-effect waves-light btn blue darken-4">
+                Voltar<i class="material-icons right">arrow_back</i>
+            </a>
         </div>
     </div>
 </div>
