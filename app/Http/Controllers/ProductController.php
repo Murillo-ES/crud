@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Schema;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProductController extends Controller
 {
@@ -101,5 +100,14 @@ class ProductController extends Controller
         },  'products.csv', [
             'Content-Type' => 'text/csv',
         ]);
+    }
+
+    public function exportToPDF()
+    {
+        $products = Product::all();
+
+        $pdf = Pdf::loadView('pdf.products', compact('products'));
+
+        return $pdf->download('products.pdf');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CartController extends Controller
 {
@@ -134,5 +135,14 @@ class CartController extends Controller
         },  'cart.csv', [
             'Content-Type' => 'text/csv',
         ]);
+    }
+
+    public function exportToPDF()
+    {
+        $cartCollection = \Cart::getContent();
+
+        $pdf = Pdf::loadView('pdf.cart', compact('cartCollection'));
+
+        return $pdf->download('cart.pdf');
     }
 }

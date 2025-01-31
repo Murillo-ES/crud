@@ -17,8 +17,10 @@ Route::name('cart.')->group(function(){
     Route::post('cart/clear', [CartController::class, 'clear'])->name('clear');
     Route::post('cart/checkout', [CartController::class, 'checkout'])->name('checkout');
     Route::get('cart/exportToCSV', [CartController::class, 'exportToCSV'])->name('exportToCSV');
+    Route::get('cart/exportToPDF', [CartController::class, 'exportToPDF'])->name('exportToPDF');
 });
 
 Route::get('products/exportToCSV', [ProductController::class, 'exportToCSV'])->name('products.exportToCSV');
+Route::get('products/exportToPDF', [ProductController::class, 'exportToPDF'])->name('products.exportToPDF');
 
 Route::resource('products', ProductController::class);

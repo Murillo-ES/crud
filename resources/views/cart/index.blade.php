@@ -19,7 +19,8 @@
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 text-black">
             <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Seu Carrinho</h3>
             <a href="{{route('products.index')}}"><strong>Produtos</strong></a><br>
-            <a href="{{route('cart.exportToCSV')}}"><strong>Exportar Carrinho (CSV)</strong></a>
+            <a href="{{route('cart.exportToCSV')}}"><strong>Exportar Carrinho (CSV)</strong></a><br>
+            <a href="{{route('cart.exportToPDF')}}"><strong>Exportar Carrinho (PDF)</strong></a>
             <table class="min-w-full table-auto border-collapse border border-gray-300 dark:border-gray-600">
                 <thead>
                     <tr>
