@@ -16,6 +16,15 @@
                 </div>
             @endif
 
+            @if ($mensagem = Session::get('caution'))
+                <div class="card yellow">
+                    <div class="card-content black-text">
+                        <span class="card-title"><strong>Atenção!</strong></span>
+                        <p>{{ $mensagem }}</p>
+                    </div>
+                </div>
+            @endif
+
             @if ($mensagem = Session::get('Falha na operação!'))
                 <div class="card red">
                     <div class="card-content white-text">
@@ -40,7 +49,7 @@
                                     <label for="quantity" class="grey-text text-lighten-4"><strong>Quantidade para comprar:</strong></label>
                                     <input type="number" name="quantity" class="grey-text text-lighten-4" id="quantity" min="1" max="{{$product->stock}}" size="3">
                                     <input type="hidden" name="id" value="{{$product->id}}">
-                                    <button class="btn waves-effect waves-light green accent-3" type="submit" name="action">Adicionar ao carrinho
+                                    <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Adicionar ao carrinho
                                         <i class="material-icons right">add_shopping_cart</i>
                                     </button>
                                 </div>
@@ -52,13 +61,13 @@
                         <div class="divider"></div>
                         <br>
                         <p><strong>Opções Adicionais</strong></p>
-                        <form action="{{route('products.destroy', $product->id)}}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn waves-effect waves-light red accent-4">Excluir Produto
+                        <br>
+                        <div>
+                            <button onClick="Livewire.dispatch('openModal', { component: 'delete', arguments: { productId: {{ $product->id }} } })" class="btn waves-effect waves-light red accent-4">
+                                Excluir Produto
                                 <i class="material-icons right">delete</i>
                             </button>
-                        </form>
+                        </div>
                         <br>
                         <form action="{{route('products.edit', $product->id)}}" method="GET">
                             @csrf
@@ -73,5 +82,4 @@
         </div>
     </div>
 </div>
-
 @endsection

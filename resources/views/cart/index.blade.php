@@ -16,6 +16,15 @@
                 </div>
             @endif
 
+            @if ($mensagem = Session::get('caution'))
+                <div class="card yellow">
+                    <div class="card-content text-black">
+                        <span class="card-title"><strong>Atenção!</strong></span>
+                        <p>{{ $mensagem }}</p>
+                    </div>
+                </div>
+            @endif
+
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 text-black">
             <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4" style="text-align: center">Seu Carrinho</h3>
             <a href="{{route('cart.exportToCSV')}}" class="waves-effect waves-light btn blue darken-4">
@@ -32,6 +41,7 @@
                         <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Descrição</th>
                         <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Quantidade</th>
                         <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Preço Total</th>
+                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Remover Itens</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,17 +56,14 @@
                                 R$ {{ number_format($item->getPriceSum(), 2, ',', '.') }}
                             </td>
                             <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">
-                                <form action="{{route('cart.removeProduct')}}" method="POST">
-                                    @csrf
-                                    <div class="input-field inline">
-                                        <input type="hidden" name="id" value="{{$item->id}}">
-                                        <label for="quantity"><strong>Quantidade:</strong></label>
-                                        <input type="number" name="quantity" id="quantity" min="0" max="{{$item->quantity}}">
-                                        <button class="btn waves-effect waves-light red">Remover Quantidade
-                                            <i class="material-icons right">remove_shopping_cart</i>
-                                        </button>
-                                    </div>
-                                </form>
+                                <div>
+                                    <button 
+                                    onClick="Livewire.dispatch('openModal', { component: 'remove-item', arguments: { productId: {{ $item->id }}, quantity: {{ $item->quantity }} } })"
+                                    class="btn waves-effect waves-light red">
+                                        Remover Quantidade
+                                        <i class="material-icons right">remove</i>
+                                    </button>
+                                </div>
                             </td>              
                         </tr>
                     @endforeach
@@ -72,6 +79,7 @@
                     <i class="material-icons right">remove_shopping_cart</i>
                 </button>
             </form>
+            <br>
             <form action="{{route('cart.checkout')}}" method="POST">
                 @csrf
                 @foreach ($items as $item)

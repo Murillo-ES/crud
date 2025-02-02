@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    @livewireStyles
 </head>
 <body>
 
@@ -36,17 +37,21 @@
         </div>
       </nav>
 
-<div class="container">
-    @yield('content')
-</div>
+  <div class="container">
+      @yield('content')
+  </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script>
-    var elemDrop = document.querySelectorAll('.dropdown-trigger');
-    var instanceDrop = M.Dropdown.init(elemDrop, {
-      coverTrigger: false,
-      constraiWidth: false
-    });
+  @yield('footer')
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+      var elemDrop = document.querySelectorAll('.dropdown-trigger');
+      var instanceDrop = M.Dropdown.init(elemDrop, {
+        coverTrigger: false,
+        constraiWidth: false
+      });
   </script>
+  @livewire('livewire-ui-modal')
+  @livewireScripts
 </body>
 </html>

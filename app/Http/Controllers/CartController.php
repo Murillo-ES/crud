@@ -17,6 +17,10 @@ class CartController extends Controller
 
     public function addProduct(Request $request)
     {
+        if (empty($request->quantity)) {
+            return redirect()->route('products.show', $request->id)->with('caution', 'Selecione uma quantidade válida para adicionar ao carrinho.');
+        }
+
         $product = Product::where('id', $request->id)->firstOrFail();
 
         $quantityOnCart = $product->onCart;
@@ -46,27 +50,6 @@ class CartController extends Controller
         ]);
 
         return redirect()->route('products.show', $request->id)->with('Sucesso!', "Produto adicionado ao carrinho!");
-    }
-
-    public function removeProduct(Request $request)
-    {
-        $product = Product::where('id', $request->id)->firstOrFail();
-
-        $product->update([
-            'onCart' => $product->onCart - $request->quantity
-        ]);
-
-        $itemQuantity = \Cart::get($request->id)->quantity;
-
-        if (($itemQuantity - $request->quantity) == 0) {
-            \Cart::remove($request->id);
-        } else { 
-            \Cart::update($request->id, array(
-                'quantity' => -$request->quantity
-            ));
-        }
-
-        return redirect()->route('cart.index')->with('Sucesso!', "Carrinho atualizado com sucesso!");
     }
 
     public function clear(Request $request)

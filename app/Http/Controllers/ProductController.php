@@ -76,16 +76,6 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('Sucesso!', 'Produto atualizado com sucesso!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Product $product)
-    {
-        $product->delete();
-
-        return redirect()->route('products.index')->with('Sucesso!', 'Produto removido com sucesso!');
-    }
-
     public function exportToCSV()
     {
         return response()->streamDownload(function(){
