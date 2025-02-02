@@ -31,21 +31,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        Product::create([
-            'name' => Str::title($request->input('name')),
-            'description' => $request->input('description'),
-            'price' => $request->input('price'),
-            'stock' => $request->input('stock')
-        ]);
-
-        return redirect()->route('products.index')->with('Sucesso!', 'Produto criado com sucesso!');
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(Product $product)
