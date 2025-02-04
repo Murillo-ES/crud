@@ -1,6 +1,8 @@
+import tailwindcss from "@tailwindcss/vite";
+
 export default {
     plugins: {
-        tailwindcss: {},
+        "@tailwindcss/postcss": {},
         autoprefixer: {},
     },
 };

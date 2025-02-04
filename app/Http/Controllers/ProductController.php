@@ -14,12 +14,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $sort = $request->query('sort', 'price');
-        $order = $request->query('order', 'asc');
-
-        $products = Product::orderBy($sort, $order)->get();
-
-        return view('products.index', compact('products', 'sort', 'order'));
+        return view('products.index');
     }
 
     /**
@@ -44,21 +39,6 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         return view('products.edit', compact('product'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Product $product)
-    {
-        $product->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'stock' => $request->stock
-        ]);
-
-        return redirect()->route('products.index')->with('Sucesso!', 'Produto atualizado com sucesso!');
     }
 
     public function exportToCSV()

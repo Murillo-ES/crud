@@ -2,19 +2,20 @@
 
 namespace App\Livewire;
 
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 use App\Models\Product;
-use Illuminate\Support\Str;
+use Livewire\Attributes\Validate;
 
-class CreateProduct extends Component
+class EditProduct extends Component
 {
+    public $productId;
+
     #[Validate('required', message: 'Defina um nome para o seu produto.')]
     #[Validate('string')]
     #[Validate('max:255', message: 'O nome do seu produto é muito grande.')]
     public $name = '';
 
-    public $description = '';
+    public $description;
 
     #[Validate('required', message: 'Defina um preço para o seu produto.')]
     #[Validate('numeric', message: 'Valor inválido.')]
@@ -28,22 +29,24 @@ class CreateProduct extends Component
     #[Validate('max:999', message: 'Máximo de 999 unidades necessárias para criar o produto.')]
     public $stock = '';
 
-    public function create()
+    public function edit()
     {
         $this->validate();
 
-        Product::create([
-            'name' => Str::title($this->name),
+        $product = Product::where('id', $this->productId);
+
+        $product->update([
+            'name' => $this->name,
             'description' => empty($this->description) ? 'No description.' : $this->description,
-            'price' => floatval($this->price),
-            'stock' => $this->stock
+            'price' => $this->price,
+            'stock' => $this->stock,
         ]);
 
-        return redirect()->route('products.index')->with('Sucesso!', 'Produto criado com sucesso!');
+        return redirect()->route('products.show', $this->productId)->with('Sucesso!', 'Produto atualizado com sucesso!');
     }
 
     public function render()
     {
-        return view('livewire.create-product');
+        return view('livewire.edit-product');
     }
 }
