@@ -59,7 +59,7 @@
                                 @livewire('remove-item', [
                                     'productId' => $item->id,
                                     'quantity' => $item->quantity
-                                ])
+                                ], key($item->id))
                             </td>              
                         </tr>
                     @endforeach

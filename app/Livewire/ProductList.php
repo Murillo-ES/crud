@@ -4,49 +4,51 @@ namespace App\Livewire;
 
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\Product;
 
 class ProductList extends Component
 {
-    public $products;
+    use WithPagination;
 
     #[Url]
-    public $sort = '';
+    public $sort = 'latest';
 
     #[Url]
-    public $order = '';
-
-    public function mount()
-    {
-        $this->products = Product::all();
-    }
+    public $order = 'desc';
 
     public function orderProducts($sort, $order = null)
     {
         $this->sort = $sort;
 
-        $this->order = $order ?? '';
+        $this->order = $order ?? 'desc';
 
-        $query = Product::query();
-
-        if ($sort == 'latest') {
-            $query->latest();
-        } elseif ($sort == 'oldest') {
-            $query->oldest();
-        } else {
-            $query->orderBy($sort, $order);
-        }
-
-        $this->products = $query->get();
+        $this->resetPage();
     }
 
     protected $queryString = [
-        'sort' => ['except' => ''],
-        'order' => ['except' => '']
+        'sort' => ['except' => 'latest'],
+        'order' => ['except' => 'desc'],
     ];
+
+    protected $paginationTheme = 'bootstrap';
 
     public function render()
     {
-        return view('livewire.product-list');
+        $query = Product::query();
+
+        if ($this->sort == 'latest') {
+            $query->latest();
+        } elseif ($this->sort == 'oldest') {
+            $query->oldest();
+        } else {
+            $query->orderBy($this->sort, $this->order);
+        }
+
+        $products = $query->paginate(10)->withQueryString();
+
+        $emptyProducts = Product::where('stock', '0')->get();
+
+        return view('livewire.product-list', compact('products', 'emptyProducts'));
     }
 }

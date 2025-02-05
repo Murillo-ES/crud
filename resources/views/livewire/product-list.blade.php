@@ -41,7 +41,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($this->products as $product)
+            @foreach ($products as $product)
                 @if ($product->stock > 0)
                     <tr wire:key="{{ $product->id }}">
                         <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">{{ $product->name }}</td>
@@ -62,6 +62,12 @@
 
     <br>
 
+    <div>
+        {{ $products->links() }}
+    </div>
+
+    <br>
+
     <h5>Produtos não disponíveis</h5>
     <table class="min-w-full table-auto border-collapse border border-gray-300 dark:border-gray-600 highlight centered">
         <thead>
@@ -73,20 +79,18 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($this->products as $product)
-                @if ($product->stock <= 0)
-                    <tr>
-                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">{{ $product->name }}</td>
-                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">{{ $product->description }}</td>
-                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">
-                            R$ {{ number_format($product->price, 2, ',', '.') }}
-                        </td>
-                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                            <a href="{{route('products.show', $product->id)}}" class="waves-effect waves-light btn-small blue darken-4">
-                                Visualizar Produto</a>
-                        </td>             
-                    </tr>
-                @endif
+            @foreach ($emptyProducts as $product)
+                <tr wire:key="{{ $product->id }}">
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">{{ $product->name }}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">{{ $product->description }}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">
+                        R$ {{ number_format($product->price, 2, ',', '.') }}
+                    </td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                        <a href="{{route('products.show', $product->id)}}" class="waves-effect waves-light btn-small blue darken-4">
+                            Visualizar Produto</a>
+                    </td>             
+                </tr>
             @endforeach
         </tbody>
     </table>

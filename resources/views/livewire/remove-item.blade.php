@@ -1,7 +1,7 @@
 <div>
-    <button data-target="modal1" class="btn modal-trigger red">Remover</i></button>
+    <button data-target="modal{{ $productId }}" class="btn modal-trigger red">Remover</i></button>
 
-    <div id="modal1" class="modal" style="background: #fff; margin: 10% auto; padding: 20px; height:270px; width: 500px; text-align: center; color: #000;">
+    <div id="modal{{ $productId }}" class="modal" style="background: #fff; margin: 10% auto; padding: 20px; height:270px; width: 500px; text-align: center; color: #000;">
         <div class="modal-content">
             <p>Selecione uma quantidade para remover:</p>
             <form wire:submit="remove">
