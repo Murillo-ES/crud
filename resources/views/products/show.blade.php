@@ -63,10 +63,9 @@
                         <p><strong>Opções Adicionais</strong></p>
                         <br>
                         <div>
-                            <button onClick="Livewire.dispatch('openModal', { component: 'delete', arguments: { productId: {{ $product->id }} } })" class="btn waves-effect waves-light red accent-4">
-                                Excluir Produto
-                                <i class="material-icons right">delete</i>
-                            </button>
+                            @livewire('delete-button', [
+                                'productId' => $product->id
+                            ])
                         </div>
                         <br>
                         <form action="{{route('products.edit', $product->id)}}" method="GET">
@@ -82,4 +81,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    
+</script>
+
 @endsection

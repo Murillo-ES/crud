@@ -33,8 +33,8 @@ class CreateProduct extends Component
         $this->validate();
 
         Product::create([
-            'name' => Str::title($this->name),
-            'description' => empty($this->description) ? 'No description.' : $this->description,
+            'name' => Str::ucfirst($this->name),
+            'description' => empty($this->description) ? 'No description.' : Str::ucfirst($this->description),
             'price' => floatval($this->price),
             'stock' => $this->stock
         ]);

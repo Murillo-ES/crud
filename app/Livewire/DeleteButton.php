@@ -3,10 +3,9 @@
 namespace App\Livewire;
 
 use App\Models\Product;
-use LivewireUI\Modal\ModalComponent;
-use Livewire\Attributes\On;
+use Livewire\Component;
 
-class Delete extends ModalComponent
+class DeleteButton extends Component
 {
     public $productId;
 
@@ -31,6 +30,6 @@ class Delete extends ModalComponent
 
     public function render()
     {
-        return view('livewire.delete');
+        return view('livewire.delete-button');
     }
 }

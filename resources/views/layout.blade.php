@@ -52,8 +52,19 @@
         coverTrigger: false,
         constraiWidth: false
       });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var elems = document.querySelectorAll(".modal");
+        M.Modal.init(elems);
+
+        // Ensure modal is reinitialized after Livewire updates
+        Livewire.hook("message.processed", () => {
+            var elems = document.querySelectorAll(".modal");
+            M.Modal.init(elems);
+        });
+      });
   </script>
-  @livewire('livewire-ui-modal')
+
   @livewireScripts
 </body>
 </html>

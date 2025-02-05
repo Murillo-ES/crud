@@ -39,7 +39,7 @@
 
             <h5>Produtos disponíveis</h5>
 
-            @livewire('product-list')
+            <livewire:product-list />
             
         </div>
     </div>

@@ -56,14 +56,10 @@
                                 R$ {{ number_format($item->getPriceSum(), 2, ',', '.') }}
                             </td>
                             <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">
-                                <div>
-                                    <button 
-                                    onClick="Livewire.dispatch('openModal', { component: 'remove-item', arguments: { productId: {{ $item->id }}, quantity: {{ $item->quantity }} } })"
-                                    class="btn waves-effect waves-light red">
-                                        Remover Quantidade
-                                        <i class="material-icons right">remove</i>
-                                    </button>
-                                </div>
+                                @livewire('remove-item', [
+                                    'productId' => $item->id,
+                                    'quantity' => $item->quantity
+                                ])
                             </td>              
                         </tr>
                     @endforeach

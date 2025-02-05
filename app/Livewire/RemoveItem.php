@@ -2,10 +2,10 @@
 
 namespace App\Livewire;
 
-use LivewireUI\Modal\ModalComponent;
+use Livewire\Component;
 use App\Models\Product;
 
-class RemoveItem extends ModalComponent
+class RemoveItem extends Component
 {
     public $productId;
 

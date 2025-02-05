@@ -54,6 +54,10 @@ class CartController extends Controller
 
     public function clear(Request $request)
     {
+        if (\Cart::isEmpty()) {
+            return redirect()->route('cart.index')->with('caution', 'Você não tem itens em seu carrinho no momento!');
+        }
+
         $idArray = $request->idArray;
 
         foreach ($idArray as $id) {
@@ -71,6 +75,12 @@ class CartController extends Controller
 
     public function checkout(Request $request)
     {
+        $cartContent = \Cart::getContent();
+
+        if (\Cart::isEmpty()) {
+            return redirect()->route('cart.index')->with('caution', 'Você não tem itens em seu carrinho no momento!');
+        } 
+            
         $idArray = $request->idArray;
 
         foreach ($idArray as $id) {
