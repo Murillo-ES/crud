@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\UserController;
 use App\Livewire\Counter;
 
 // Route::get('counter', Counter::class);
@@ -11,6 +12,10 @@ use App\Livewire\Counter;
 Route::get('/', function(){
     return redirect()->route('products.index');
 });
+
+Route::get('users', [UserController::class, 'index'])->name('users.index');
+
+Route::get('/user/{id}', [UserController::class, 'details'])->name('user.details');
 
 Route::any('cart', [CartController::class, 'index'])->name('cart.index');
 

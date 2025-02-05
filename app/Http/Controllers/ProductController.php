@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -12,7 +13,7 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         return view('products.index');
     }
@@ -22,7 +23,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        $users = User::all();
+
+        return view('products.create', compact('users'));
     }
 
     /**

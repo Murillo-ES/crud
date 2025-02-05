@@ -18,7 +18,7 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => Str::ucfirst($this->faker->words(2, true)),
+            'name' => Str::ucfirst($this->faker->unique()->words(2, true)),
             'description' => Str::ucfirst($this->faker->paragraph()),
             'price' => $this->faker->randomFloat(1, 999, 2),
             'stock' => $this->faker->randomNumber(3, false),

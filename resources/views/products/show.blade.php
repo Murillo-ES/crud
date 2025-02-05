@@ -39,6 +39,7 @@
                   <div class="card blue lighten-1">
                     <div class="card-content grey-text text-lighten-4">
                         <span class="card-title"><strong>{{$product->name}}</strong></span>
+                        <p><strong>Criador:</strong> <a href="{{route('user.details', $product->user->id)}}" class="white-text">{{$product->user->name}}</a></p>
                         <p>{{$product->description}}</p>
                         <p><strong>Preço: </strong>R$ {{ number_format($product->price, 2, ',', '.') }}</p>
                         <p><strong>Quantidade Disponível: </strong>{{$product->stock}}</p>

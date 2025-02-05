@@ -28,6 +28,7 @@
                 </a>
             </li>
             <li><a href="{{route('cart.index')}}">Carrinho</a></li>
+            <li><a href="{{route('users.index')}}">Usuários</a></li>
           </ul>
           <form action="{{route('products.search')}}" method="GET">
             <div class="input-field right">

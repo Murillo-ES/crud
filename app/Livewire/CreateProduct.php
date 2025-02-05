@@ -5,10 +5,13 @@ namespace App\Livewire;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Str;
 
 class CreateProduct extends Component
 {
+    public $users;
+
     #[Validate('required', message: 'Defina um nome para o seu produto.')]
     #[Validate('string')]
     #[Validate('max:255', message: 'O nome do seu produto é muito grande.')]
@@ -28,12 +31,17 @@ class CreateProduct extends Component
     #[Validate('max:999', message: 'Máximo de 999 unidades necessárias para criar o produto.')]
     public $stock = '';
 
+    #[Validate('required', message: 'Selecione um usuário responsável por este produto.')]
+    #[Validate('numeric')]
+    public $userId = '';
+
     public function create()
     {
         $this->validate();
 
         Product::create([
             'name' => Str::ucfirst($this->name),
+            'user_id' => $this->userId,
             'description' => empty($this->description) ? 'No description.' : Str::ucfirst($this->description),
             'price' => floatval($this->price),
             'stock' => $this->stock
