@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\User;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\ProductRequest;
 
@@ -46,9 +47,12 @@ class ProductAPIController extends Controller
         $data['description'] = $data['description'] ?? 'No description.';
         $data['stock'] = $data['stock'] ?? '1';
 
+        // The random user_id is temporary. In practice, "user_id" will be set to the ID of the user that is currently inserting the product.
+
         $product = Product::firstOrNew(
             ['name' => $data['name']],
             [
+                'user_id' => User::inRandomOrder()->first()->id,
                 'description' => $data['description'],
                 'price' => floatval($data['price']),
                 'stock' => $data['stock']
