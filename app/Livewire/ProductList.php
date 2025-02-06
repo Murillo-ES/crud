@@ -31,8 +31,6 @@ class ProductList extends Component
         'order' => ['except' => 'desc'],
     ];
 
-    protected $paginationTheme = 'bootstrap';
-
     public function render()
     {
         $query = Product::query();

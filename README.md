@@ -16,8 +16,11 @@ This is a simple **CRUD (Create, Read, Update, Delete) application** built using
 This are features that I intend on implementing on this application in the near future.
 
 📌 **API Features** -> Although the initial API was already set, many other features were implemented since the initial coding, rendering it obsolete. I intend to address those issues initially.
+
 📌 **List of Users to PDF/CSV** -> The products list already has that feature implemented. A similar one will be added to the Users' list.
+
 📌 **New Home Screen** -> Currently, the "Home" button redirects the user to the Products list. A separate Home route will be added.
+
 📌 On top of those changes, I intend to **review** and **refactor** the code constantly, as to improve its longevity and readability.
 
 ## Installation
