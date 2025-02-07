@@ -10,10 +10,14 @@ use App\Livewire\Counter;
 // Route::get('counter', Counter::class);
 
 Route::get('/', function(){
-    return redirect()->route('products.index');
-});
+    return view('home');
+})->name('home');
 
 Route::get('users', [UserController::class, 'index'])->name('users.index');
+
+Route::get('users/exportToCSV', [UserController::class, 'exportToCSV'])->name('users.exportToCSV');
+
+Route::get('users/exportToPDV', [UserController::class, 'exportToPDF'])->name('users.exportToPDF');
 
 Route::get('/user/{id}', [UserController::class, 'details'])->name('user.details');
 

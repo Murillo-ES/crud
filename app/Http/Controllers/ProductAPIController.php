@@ -78,7 +78,7 @@ class ProductAPIController extends Controller
     {
         if(empty($request->query())) {
             return response()->json([
-                'message' => "No changes made to product ID #$id."
+                'response' => "No changes made to product ID #$id."
             ]);
         }
 
@@ -87,7 +87,7 @@ class ProductAPIController extends Controller
         $targetProduct->update($request->validated());
 
         return response()->json([
-            'message' => "Product ID #$id updated succesfully.",
+            'response' => "Product ID #$id updated succesfully.",
             'updatedProduct' => new ProductResource($targetProduct)
         ]);
     }

@@ -12,6 +12,7 @@
 </head>
 <body>
 
+  <header>
     <ul id='dropdown1' class='dropdown-content blue-text'>
         <li><a href="{{ route('products.index') }}">Lista de Produtos</a></li>
         <li><a href="{{ route('products.create') }}">Criar Produto</a></li>
@@ -19,9 +20,9 @@
 
     <nav class="blue darken-4">
         <div class="nav-wrapper">
-          <a href="{{route('products.index')}}" class="brand-logo center">e-Commerce Project</a>
+          <a href="{{route('home')}}" class="brand-logo center">e-Commerce Project</a>
           <ul id="nav-mobile" class="left hide-on-med-and-down">
-            <li><a href="{{route('products.index')}}">Home</a></li>
+            <li><a href="{{route('home')}}">Home</a></li>
             <li>
                 <a href="{{route('products.index')}}" class="dropdown-trigger" data-target="dropdown1">
                     Produtos<i class="material-icons right">expand_more</i>
@@ -39,10 +40,13 @@
           </form>
         </div>
       </nav>
+  </header>
 
-  <div class="container">
-      @yield('content')
-  </div>
+  <main>
+    <div class="container">
+        @yield('content')
+    </div>
+  </main>
 
   @yield('footer')
 
