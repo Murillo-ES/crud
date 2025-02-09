@@ -44,34 +44,6 @@ class ProductController extends Controller
         return view('products.edit', compact('product'));
     }
 
-    public function exportToCSV()
-    {
-        return response()->streamDownload(function(){
-            $handle = fopen('php://output', 'w');
-
-            fputcsv($handle, ['ID', 'Name', 'Description', 'Price', 'Stock']);
-
-            $productsList = Product::select(['id', 'name', 'description', 'price', 'stock'])->get();
-
-            foreach ($productsList as $product) {
-                fputcsv($handle, $product->toArray());
-            }
-
-            fclose($handle);
-        },  'products.csv', [
-            'Content-Type' => 'text/csv',
-        ]);
-    }
-
-    public function exportToPDF()
-    {
-        $products = Product::all();
-
-        $pdf = Pdf::loadView('pdf.products', compact('products'));
-
-        return $pdf->download('products.pdf');
-    }
-
     public function search(Request $request)
     {
         try {

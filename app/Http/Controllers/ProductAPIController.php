@@ -10,10 +10,12 @@ use App\Http\Requests\ProductRequest;
 
 class ProductAPIController extends Controller
 {
+    // Return products list.
     public function index(Request $request)
     {
         $products = Product::query();
 
+        // Optional sorting via query strings.
         if ($request->has('minPrice')) {
             $products->where('price', '>=', $request->minPrice);
         }
@@ -33,6 +35,7 @@ class ProductAPIController extends Controller
         return ProductResource::collection($products);
     }
 
+    // Return specific product by ID.
     public function show($id)
     {
         $product = Product::where('id', $id)->firstOrFail();
@@ -40,6 +43,7 @@ class ProductAPIController extends Controller
         return new ProductResource($product);
     }
 
+    // Create new product.
     public function store(ProductRequest $request)
     {
         $data = $request->validated();
@@ -59,6 +63,7 @@ class ProductAPIController extends Controller
             ]
         );
 
+        // Check if product's name is already on the database before proceeding.
         if ($product->exists) {
             return response()->json([
                 'response' => 'Product already exists.',
@@ -74,11 +79,21 @@ class ProductAPIController extends Controller
         ]);
     }
 
+    // Edit products information by ID.
     public function update($id, ProductRequest $request)
     {
+        // Check if any changes were made via query strings.
         if(empty($request->query())) {
             return response()->json([
                 'response' => "No changes made to product ID #$id."
+            ]);
+        }
+
+        // Check if the new name already exists on the database before proceeding.
+        if($request->has('name') && Product::where('name', $request->name)->exists()){
+            return response()->json([
+                'response' => "This product's name already exists on the database.",
+                'id' => Product::where('name', $request->name)->value('id')
             ]);
         }
 
@@ -92,6 +107,7 @@ class ProductAPIController extends Controller
         ]);
     }
 
+    // Delete product from the database by ID.
     public function destroy($id)
     {
         $product = Product::where('id', $id)->firstOrFail();

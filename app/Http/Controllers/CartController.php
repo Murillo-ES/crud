@@ -8,6 +8,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class CartController extends Controller
 {
+    // Cart List
     public function index()
     {
         $items = \Cart::getContent();
@@ -15,8 +16,10 @@ class CartController extends Controller
         return view('cart.index', compact('items'));
     }
 
+    // Add product to cart.
     public function addProduct(Request $request)
     {
+        // Check if user inputted a valid quantity before proceeding.
         if (empty($request->quantity)) {
             return redirect()->route('products.show', $request->id)->with('caution', 'Selecione uma quantidade válida para adicionar ao carrinho.');
         }
@@ -28,6 +31,7 @@ class CartController extends Controller
         
         $totalQuantity = $quantityOnCart + $request->quantity;
 
+        // Check if it's possible to buy the intended quantity.
         if ($totalQuantity > $quantityOnStock) {
             return redirect()->route('products.show', $request->id)->with(
                 "Falha na operação!",
@@ -52,8 +56,10 @@ class CartController extends Controller
         return redirect()->route('products.show', $request->id)->with('Sucesso!', "Produto adicionado ao carrinho!");
     }
 
+    // Remove all items from cart.
     public function clear(Request $request)
     {
+        // Check if the cart is empty before proceeding.
         if (\Cart::isEmpty()) {
             return redirect()->route('cart.index')->with('caution', 'Você não tem itens em seu carrinho no momento!');
         }
@@ -73,10 +79,15 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('Sucesso!', "Carrinho esvaziado com sucesso!");
     }
 
+    // Finish purchase, removing all items from cart and deducting them from the database.
+
+    // If a fully functional payment system was available, it would be inserted either here, or on a
+    // separate code, confirming payment BEFORE deducting the product(s).
     public function checkout(Request $request)
     {
         $cartContent = \Cart::getContent();
 
+        // Check if the cart is empty before proceeding.
         if (\Cart::isEmpty()) {
             return redirect()->route('cart.index')->with('caution', 'Você não tem itens em seu carrinho no momento!');
         } 
@@ -85,12 +96,6 @@ class CartController extends Controller
 
         foreach ($idArray as $id) {
             $product = Product::where('id', $id)->firstOrFail();
-
-            // IF MULTIPLE USERS ARE BUYING PRODUCTS
-            
-            // if ($product->stock < $product->onCart) {
-            //     return redirect()->route('cart.index')->with('Falha na operação!', "Não temos esta quantidade disponível para o produto $product->name.");
-            // }
 
             $product->update([
                 'stock' => $product->stock - $product->onCart,
@@ -101,41 +106,5 @@ class CartController extends Controller
         \Cart::clear();
 
         return redirect()->route('cart.index')->with('Sucesso!', "Compra concluída com sucesso!");
-    }
-
-    public function exportToCSV()
-    {
-        return response()->streamDownload(function(){
-            $handle = fopen('php://output', 'w');
-
-            fputcsv($handle, ['ID', 'Name', 'Description', 'Price', 'Quantity']);
-
-            $cartCollection = \Cart::getContent();
-
-            foreach ($cartCollection as $item) {
-                $itemInfo = [
-                    $item->id,
-                    $item->name,
-                    $item->attributes->description,
-                    $item->price,
-                    $item->quantity
-                ];
-
-                fputcsv($handle, $itemInfo);
-            }
-
-            fclose($handle);
-        },  'cart.csv', [
-            'Content-Type' => 'text/csv',
-        ]);
-    }
-
-    public function exportToPDF()
-    {
-        $cartCollection = \Cart::getContent();
-
-        $pdf = Pdf::loadView('pdf.cart', compact('cartCollection'));
-
-        return $pdf->download('cart.pdf');
     }
 }

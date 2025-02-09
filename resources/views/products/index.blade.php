@@ -30,10 +30,10 @@
 
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-12 text-black">
             <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4" style="text-align: center">Produtos</h3>
-            <a href="{{route('products.exportToCSV')}}" class="waves-effect waves-light btn blue darken-4">
+            <a href="{{route('download.csv')}}" class="waves-effect waves-light btn blue darken-4">
                 Exportar Produtos (CSV)<i class="material-icons right">download</i>
             </a>
-            <a href="{{route('products.exportToPDF')}}" class="waves-effect waves-light btn blue darken-4">
+            <a href="{{route('download.pdf')}}" class="waves-effect waves-light btn blue darken-4">
                 Exportar Produtos (PDF)<i class="material-icons right">download</i>
             </a>
 

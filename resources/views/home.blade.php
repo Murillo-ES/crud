@@ -3,6 +3,16 @@
 @section('title', 'e-Commerce Project')
 
 @section('content')
+
+@if ($mensagem = Session::get('caution'))
+    <div class="card yellow">
+        <div class="card-content white-text">
+            <span class="card-title">Something</span>
+            <p>{{ $mensagem }}</p>
+        </div>
+    </div>
+@endif
+
 <div class="container center-align">
     <h4 class="blue-text text-darken-4">Bem-vindo!</h4>
     <p class="grey-text">Selecione uma opção:</p>
