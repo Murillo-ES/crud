@@ -27,19 +27,7 @@
             @enderror
         </div>
 
-        {{-- If users are authenticated and creating products, this would be a hidden input, with the user ID as value. --}}
-        <label for="user"><strong>Usuário</strong></label>
-        <select class="browser-default" wire:model="userId">
-            <option value="" disabled selected>Selecione um usuário:</option>
-            @foreach ($users as $user)
-                <option value="{{ $user->id }}">{{ $user->name }}</option>
-            @endforeach
-        </select>
-        <div>
-            @error('user')
-                <span class="error">{{ $message }}</span>
-            @enderror
-        </div>
+        <input type="hidden" wire:model="userId">
         
         <br>
         <button class="btn waves-effect waves-light green" type="submit">Criar Produto

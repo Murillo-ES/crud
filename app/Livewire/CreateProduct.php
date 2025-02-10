@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class CreateProduct extends Component
 {
-    public $users;
+    public $userId;
 
     #[Validate('required', message: 'Defina um nome para o seu produto.')]
     #[Validate('string')]
@@ -30,10 +30,6 @@ class CreateProduct extends Component
     #[Validate('min:1', message: 'Mínimo de 1 unidade necessária para criar o produto.')]
     #[Validate('max:999', message: 'Máximo de 999 unidades necessárias para criar o produto.')]
     public $stock = '';
-
-    #[Validate('required', message: 'Selecione um usuário responsável por este produto.')]
-    #[Validate('numeric')]
-    public $userId = '';
 
     public function create()
     {

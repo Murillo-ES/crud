@@ -18,7 +18,7 @@
                 </div>
             @endif
 
-            @livewire('create-product', ['users' => $users])
+            @livewire('create-product', ['userId' => $userId])
             <br>
             <a href="{{route('products.index')}}" class="waves-effect waves-light btn blue darken-4">
                 Voltar<i class="material-icons right">arrow_back</i>

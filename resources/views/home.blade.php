@@ -4,10 +4,10 @@
 
 @section('content')
 
-@if ($mensagem = Session::get('caution'))
-    <div class="card yellow">
+@if ($mensagem = Session::get('success'))
+    <div class="card green">
         <div class="card-content white-text">
-            <span class="card-title">Something</span>
+            <span class="card-title"><strong>Sucesso!</strong></span>
             <p>{{ $mensagem }}</p>
         </div>
     </div>
@@ -37,6 +37,42 @@
         </div>
     </div>
 </div>
+
+<br>
+
+@guest
+    <div class="container center-align">
+        <div class="row">
+            <div class="col s12 m4">
+                <a href="{{ route('login') }}" class="btn-large blue darken-4 waves-effect waves-light">
+                    <i class="material-icons left">login</i> Login
+                </a>
+            </div>
+
+            <div class="col s12 m4">
+                <a href="{{ route('register') }}" class="btn-large blue darken-4 waves-effect waves-light">
+                    <i class="material-icons left">person_add</i> Criar uma Conta
+                </a>
+            </div>
+        </div>
+    </div>
+@endguest
+
+@auth
+    <div class="container center-align">
+        <div class="row">
+            <div class="col s12 m4">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn-large blue darken-4 waves-effect waves-light">
+                        <i class="material-icons left">logout</i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+@endauth
+
 @endsection
 
 @section('footer')

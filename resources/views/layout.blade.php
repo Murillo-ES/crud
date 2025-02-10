@@ -30,6 +30,22 @@
             </li>
             <li><a href="{{route('cart.index')}}">Carrinho</a></li>
             <li><a href="{{route('users.index')}}">Usuários</a></li>
+            @guest
+              <li><a href="{{route('register')}}">Criar uma Conta</a></li>
+              <li><a href="{{route('login')}}"><i class="tiny material-icons right">login</i>Login</a></li>
+            @endguest
+            @auth
+              <li>
+                <a href="#" 
+                  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                  <i class="tiny material-icons right">logout</i> Logout
+                </a>
+            
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  @csrf
+                </form>
+              </li>
+            @endauth
           </ul>
           <form action="{{route('products.search')}}" method="GET">
             <div class="input-field right">

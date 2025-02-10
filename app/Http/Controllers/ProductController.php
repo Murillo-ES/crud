@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -23,9 +24,13 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $users = User::all();
+        if(!Auth::check()){
+            return redirect()->route('login')->with('caution', 'Somente usuários cadastrados podem criar produtos. Faça login ou cadastre-se!');
+        }
 
-        return view('products.create', compact('users'));
+        $userId = Auth::user()->id;
+
+        return view('products.create', compact('userId'));
     }
 
     /**
