@@ -14,116 +14,116 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class DownloadController extends Controller
 {
-    public function downloadCsv()
-    {
-        // Get the previous URL name.
-        $fullUrl = URL::previous();
-
-        $routeName = Str::chopStart($fullUrl, 'http://crud.test/');
-
-        // Products CSV
-        if (Str::startsWith($routeName, 'products')) {
-            return response()->streamDownload(function(){
-                $handle = fopen('php://output', 'w');
-    
-                fputcsv($handle, ['ID', 'Name', 'Description', 'Price', 'Stock']);
-    
-                $productsList = Product::select(['id', 'name', 'description', 'price', 'stock'])->get();
-    
-                foreach ($productsList as $product) {
-                    fputcsv($handle, $product->toArray());
-                }
-    
-                fclose($handle);
-            },  'products.csv', [
-                'Content-Type' => 'text/csv',
-            ]);
-
-        // Users CSV
-        } elseif (Str::startsWith($routeName, 'users')) {
-            return response()->streamDownload(function(){
-                $handle = fopen('php://output', 'w');
-    
-                fputcsv($handle, ['Nome', 'Data de Cadastro', 'Quantidade de Produtos']);
-    
-                $usersList = User::all();
-    
-                foreach ($usersList as $user) {
-                    $formattedDate = $user->created_at->format('d/m/Y');
-                    $productsCount = count($user->products);
-    
-                    $userArray = [
-                        $user->name,
-                        $formattedDate,
-                        $productsCount
-                    ];
-    
-                    fputcsv($handle, $userArray);
-                }
-    
-                fclose($handle);
-            },  'users.csv', [
-                'Content-Type' => 'text/csv',
-            ]);
-
-        // Cart CSV
-        } elseif (Str::startsWith($routeName, 'cart')) {
-            return response()->streamDownload(function(){
-                $handle = fopen('php://output', 'w');
-    
-                fputcsv($handle, ['ID', 'Name', 'Description', 'Price', 'Quantity']);
-    
-                $cartCollection = \Cart::getContent();
-    
-                foreach ($cartCollection as $item) {
-                    $itemInfo = [
-                        $item->id,
-                        $item->name,
-                        $item->attributes->description,
-                        $item->price,
-                        $item->quantity
-                    ];
-    
-                    fputcsv($handle, $itemInfo);
-                }
-    
-                fclose($handle);
-            },  'cart.csv', [
-                'Content-Type' => 'text/csv',
-            ]);
-        }
-    }
-
+    // Main PDF download method.
     public function downloadPdf()
     {
-        // Get the previous URL name.
         $fullUrl = URL::previous();
-
         $routeName = Str::chopStart($fullUrl, 'http://crud.test/');
 
-        // Products PDF
-        if (Str::startsWith($routeName, 'products')) {
-            $products = Product::all();
+        // Available data sources and views
+        $exports = [
+            'products' => ['data' => Product::all(), 'view' => 'pdf.products', 'filename' => 'products.pdf'],
+            'users'    => ['data' => User::all(), 'view' => 'pdf.users', 'filename' => 'users.pdf'],
+            'cart'     => ['data' => \Cart::getContent(), 'view' => 'pdf.cart', 'filename' => 'cart.pdf'],
+        ];
 
-            $pdf = Pdf::loadView('pdf.products', compact('products'));
-
-            return $pdf->download('products.pdf');
-
-        // Users PDF
-        } elseif (Str::startsWith($routeName, 'users')) {
-            $users = User::all();
-
-            $pdf = Pdf::loadView('pdf.users', compact('users'));
-
-            return $pdf->download('users.pdf');
-
-        // Cart PDF
-        } elseif (Str::startsWith($routeName, 'cart')) {
-            $cartCollection = \Cart::getContent();
-
-            $pdf = Pdf::loadView('pdf.cart', compact('cartCollection'));
-
-            return $pdf->download('cart.pdf');
+        // Find the correct exporter based on the route
+        foreach ($exports as $key => $export) {
+            if (Str::startsWith($routeName, $key)) {
+                $pdf = Pdf::loadView($export['view'], ['data' => $export['data']]);
+                return $pdf->download($export['filename']);
+            }
         }
+
+        // If no matching route is found, return a 404 response
+        abort(404, 'Invalid export request.');
     }
+
+    // Main CSV download method.
+    public function downloadCsv()
+    {
+        $fullUrl = URL::previous();
+        $routeName = Str::chopStart($fullUrl, 'http://crud.test/');
+
+        // Available data explorers.
+        $exporters = [
+            'products' => fn() => $this->exportProducts(),
+            'users'    => fn() => $this->exportUsers(),
+            'cart'     => fn() => $this->exportCart(),
+            '' 
+        ];
+
+        // Find the correct exporter based on the route
+        foreach ($exporters as $key => $exporter) {
+            if (Str::startsWith($routeName, $key)) {
+                return $exporter();
+            }
+        }
+
+        // If no matching route is found, return a 404 response
+        abort(404, 'Invalid export request.');
+    }
+
+    /**
+     * Exports products to CSV.
+     */
+    private function exportProducts()
+    {
+        return $this->streamCsv('products.csv', ['ID', 'Name', 'Description', 'Price', 'Stock'], function ($handle) {
+            $productsList = Product::select(['id', 'name', 'description', 'price', 'stock'])->get();
+            foreach ($productsList as $product) {
+                fputcsv($handle, $product->toArray());
+            }
+        });
+    }
+
+    /**
+     * Exports users to CSV.
+     */
+    private function exportUsers()
+    {
+        return $this->streamCsv('users.csv', ['Nome', 'Data de Cadastro', 'Quantidade de Produtos'], function ($handle) {
+            $usersList = User::all();
+            foreach ($usersList as $user) {
+                fputcsv($handle, [
+                    $user->name,
+                    $user->created_at->format('d/m/Y'),
+                    $user->products->count(),
+                ]);
+            }
+        });
+    }
+
+    /**
+     * Exports cart items to CSV.
+     */
+    private function exportCart()
+    {
+        return $this->streamCsv('cart.csv', ['ID', 'Name', 'Description', 'Price', 'Quantity'], function ($handle) {
+            $cartCollection = \Cart::getContent();
+            foreach ($cartCollection as $item) {
+                fputcsv($handle, [
+                    $item->id,
+                    $item->name,
+                    $item->attributes->description ?? '',
+                    $item->price,
+                    $item->quantity,
+                ]);
+            }
+        });
+    }
+
+    /**
+     * Handles streaming a CSV file.
+     */
+    private function streamCsv($filename, array $headers, callable $callback)
+    {
+        return response()->streamDownload(function () use ($headers, $callback) {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, $headers);
+            $callback($handle);
+            fclose($handle);
+        }, $filename, ['Content-Type' => 'text/csv']);
+    }
+
 }

@@ -61,7 +61,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($products as $product)
+            @foreach ($data as $product)
                 @if ($product->stock > 0)
                     <tr>
                         <td>{{ $product->id }}</td>
@@ -86,7 +86,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($products as $product)
+            @foreach ($data as $product)
                 @if ($product->stock <= 0)
                     <tr>
                         <td>{{ $product->id }}</td>

@@ -50,7 +50,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $user)
+            @foreach ($data as $user)
                 <tr>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->created_at->format('d/m/Y') }}</td>

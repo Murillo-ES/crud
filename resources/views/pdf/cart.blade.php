@@ -60,7 +60,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($cartCollection as $item)
+            @foreach ($data as $item)
                 <tr>
                     <td><strong>{{ $item->name }}</strong></td>
                     <td>{{ $item->attributes->description }}</td>
