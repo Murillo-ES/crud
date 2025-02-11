@@ -12,9 +12,9 @@ Route::prefix('products')->group(function()
 {
     Route::get('{id}', [ProductAPIController::class, 'show']);
 
-    Route::put('create', [ProductAPIController::class, 'store']);
+    Route::middleware('auth:sanctum')->put('create', [ProductAPIController::class, 'store']);
 
-    Route::patch('{id}', [ProductAPIController::class, 'update']);
+    Route::middleware('auth:sanctum')->patch('{id}', [ProductAPIController::class, 'update']);
 
     Route::delete('{id}', [ProductAPIController::class, 'destroy']);
 });

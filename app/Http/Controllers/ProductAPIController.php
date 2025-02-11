@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\User;
 use App\Http\Resources\ProductResource;
@@ -51,12 +52,10 @@ class ProductAPIController extends Controller
         $data['description'] = $data['description'] ?? 'No description.';
         $data['stock'] = $data['stock'] ?? '1';
 
-        // The random user_id is temporary. In practice, "user_id" will be set to the ID of the user that is currently inserting the product.
-
         $product = Product::firstOrNew(
             ['name' => $data['name']],
             [
-                'user_id' => User::inRandomOrder()->first()->id,
+                'user_id' => Auth::user()->id,
                 'description' => $data['description'],
                 'price' => floatval($data['price']),
                 'stock' => $data['stock']
@@ -98,6 +97,13 @@ class ProductAPIController extends Controller
         }
 
         $targetProduct = Product::where('id', $id)->firstOrFail();
+
+        // Check if product belongs to the user.
+        if (!($targetProduct->user_id == Auth::user()->id)) {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
+        }
 
         $targetProduct->update($request->validated());
 
