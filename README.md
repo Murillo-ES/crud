@@ -39,13 +39,16 @@ Returns the specified product by ID.
 ```
 
 🔗 **PUT** `/api/products/create?name=[string]&description=[string]&price=[float]&stock=[int]`  
-Creates a new product and saves it on the database.
+Creates a new product and saves it on the database with your user ID.
 
 **Query Strings**  
 - "name" (**Required**) -> Product's name. Maximum of 255 characters.
 - "description" -> Product's description. If nothing is passed, *"No description."* is set by default.
 - "price" (**Required**) -> Product's price. Minimum value: 0.99.
 - "stock" -> Product's quantity. Minimum value: 1. Maximum value: 999. If nothing is passed, *1* is set by default.
+
+**Necessary**
+- **Bearer Token Authentication** -> You can generate an API Token logging in to your account on the website, clicking "Gerenciar Conta", then clicking the "Novo Token" button.
 
 If "name" is already on the database:  
 ```json
@@ -64,13 +67,16 @@ If "name" is not on the database, a new product is created.
 ```
 
 🔗 **PATCH** `/api/products/{id}?name=[string]&description=[string]&price=[float]&stock=[int]`  
-Updates the product by its ID with the data passed via query strings.
+Updates the product by its ID with the data passed via query strings, **if** said product is registered with your user ID.
 
 **Query Strings**  
 - "name" -> Updated product name. Maximum of 255 characters.
 - "description" -> New product description.
 - "price" -> New product price. Minimum value: 0.99.
 - "stock" -> New product quantity. Minimum value: 0. Maximum value: 999.
+
+**Necessary**
+- **Bearer Token Authentication** -> You can generate an API Token logging in to your account on the website, clicking "*Gerenciar Conta*", then clicking the "*Novo Token*" button.
 
 If no query strings are passed:  
 ```json
@@ -116,7 +122,7 @@ Returns the specified user by ID.
 These are features that I intend on implementing on this application in the near future.
 
 📌 **Login and Auth**  
-Utilizing **Breeze**, I'll implement login, registration and auth factors, so that a user can register, login and create products using his own account.
+With **Breeze** implemented, some changes need to be made on the products management side of things (i.e.: only allowing the user to modify/delete his own products).
 
 📌 On top of those changes, I intend to **review** and **refactor** the code constantly, as to improve its longevity and readability.
 
