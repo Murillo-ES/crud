@@ -25,10 +25,10 @@
                 </div>
             @endif
 
-            @if ($mensagem = Session::get('Falha na operação!'))
+            @if ($mensagem = Session::get('danger'))
                 <div class="card red">
                     <div class="card-content white-text">
-                        <span class="card-title">Falha na operação!</span>
+                        <span class="card-title"><strong>Atenção!</strong></span>
                         <p>{{ $mensagem }}</p>
                     </div>
                 </div>
@@ -58,23 +58,29 @@
                         @else
                             <p>Este produto não está disponível para compra no momento!</p>
                         @endif
-                        <br>
-                        <div class="divider"></div>
-                        <br>
-                        <p><strong>Opções Adicionais</strong></p>
-                        <br>
-                        <div>
-                            @livewire('delete-button', [
-                                'productId' => $product->id
-                            ])
-                        </div>
-                        <br>
-                        <form action="{{route('products.edit', $product->id)}}" method="GET">
-                            @csrf
-                            <button class="btn waves-effect waves-light yellow accent-3 black-text">Editar Produto
-                                <i class="material-icons right">edit</i>
-                            </button>
-                        </form>
+
+                        @auth
+                            @if ($userId == $product->user_id)
+                                <br>
+                                <div class="divider"></div>
+                                <br>
+                                <p><strong>Opções Adicionais</strong></p>
+                                <br>
+                                <div>
+                                    @livewire('delete-button', [
+                                        'productId' => $product->id
+                                    ])
+                                </div>
+                                <br>
+                                <form action="{{route('products.edit', $product->id)}}" method="GET">
+                                    @csrf
+                                    <button class="btn waves-effect waves-light yellow accent-3 black-text">Editar Produto
+                                        <i class="material-icons right">edit</i>
+                                    </button>
+                                </form>
+                            @endif
+                        @endauth
+                        
                     </div>
                   </div>
                 </div>

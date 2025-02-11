@@ -122,7 +122,7 @@ Returns the specified user by ID.
 These are features that I intend on implementing on this application in the near future.
 
 📌 **Login and Auth**  
-With **Breeze** implemented, some changes need to be made on the products management side of things (i.e.: only allowing the user to modify/delete his own products).
+With **Breeze** implemented, some changes need to be made on the cart management side of things (i.e.: every user has a separate cart, cart functionality only available for authenticated users).
 
 📌 On top of those changes, I intend to **review** and **refactor** the code constantly, as to improve its longevity and readability.
 

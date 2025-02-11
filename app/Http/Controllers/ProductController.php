@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        if(!Auth::check()){
+        if (!Auth::check()) {
             return redirect()->route('login')->with('caution', 'Somente usuários cadastrados podem criar produtos. Faça login ou cadastre-se!');
         }
 
@@ -38,6 +38,12 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        if (Auth::check()) {
+            $userId = Auth::user()->id;
+
+            return view('products.show', compact('product', 'userId'));
+        }
+
         return view('products.show', compact('product'));
     }
 
@@ -46,6 +52,10 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        if (!Auth::check() || Auth::user()->id != $product->user_id) {
+            return redirect()->route('products.show', $product->id)->with('danger', 'Você não tem autorização para alterar este produto.');
+        }
+
         return view('products.edit', compact('product'));
     }
 
