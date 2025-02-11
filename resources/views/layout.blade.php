@@ -35,6 +35,7 @@
               <li><a href="{{route('login')}}"><i class="tiny material-icons right">login</i>Login</a></li>
             @endguest
             @auth
+              <li><a href="{{route('profile.edit')}}">Gerenciar Conta</a></li>
               <li>
                 <a href="#" 
                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
