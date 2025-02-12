@@ -26,6 +26,15 @@
         </div>
     @endif
 
+    @if ($mensagem = Session::get('success'))
+        <div class="card green">
+            <div class="card-content white-text">
+                <span class="card-title"><strong>Sucesso!</strong></span>
+                <p>{{ $mensagem }}</p>
+            </div>
+        </div>
+    @endif
+
     <div class="row">
         <form method="POST" action="{{ route('login') }}" class="col s12 m8">
             @csrf

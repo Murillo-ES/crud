@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class CartController extends Controller
@@ -11,6 +12,10 @@ class CartController extends Controller
     // Cart List
     public function index()
     {
+        // Binding cart to user.
+        $userId = Auth::user()->id;
+        \Cart::session($userId);
+
         $items = \Cart::getContent();
         
         return view('cart.index', compact('items'));
@@ -39,6 +44,10 @@ class CartController extends Controller
             );
         }
 
+        // Binding cart to user.
+        $userId = Auth::user()->id;
+        \Cart::session($userId);
+
         $product->update([
             'onCart' => $product->onCart + $request->quantity
         ]);
@@ -59,6 +68,10 @@ class CartController extends Controller
     // Remove all items from cart.
     public function clear(Request $request)
     {
+        // Binding cart to user.
+        $userId = Auth::user()->id;
+        \Cart::session($userId);
+        
         // Check if the cart is empty before proceeding.
         if (\Cart::isEmpty()) {
             return redirect()->route('cart.index')->with('caution', 'Você não tem itens em seu carrinho no momento!');
@@ -67,10 +80,14 @@ class CartController extends Controller
         $idArray = $request->idArray;
 
         foreach ($idArray as $id) {
+            $itemQuantity = \Cart::get($id)->quantity;
+
             $product = Product::where('id', $id)->firstOrFail();
 
+            $result = $product->onCart - $itemQuantity;
+
             $product->update([
-                'onCart' => 0
+                'onCart' => $result
             ]);
         }
 
@@ -85,6 +102,10 @@ class CartController extends Controller
     // separate code, confirming payment BEFORE deducting the product(s).
     public function checkout(Request $request)
     {
+        // Binding cart to user.
+        $userId = Auth::user()->id;
+        \Cart::session($userId);
+
         $cartContent = \Cart::getContent();
 
         // Check if the cart is empty before proceeding.
@@ -95,11 +116,15 @@ class CartController extends Controller
         $idArray = $request->idArray;
 
         foreach ($idArray as $id) {
+            $itemQuantity = \Cart::get($id)->quantity;
+
             $product = Product::where('id', $id)->firstOrFail();
 
+            $result = $product->onCart - $itemQuantity;
+
             $product->update([
-                'stock' => $product->stock - $product->onCart,
-                'onCart' => 0
+                'stock' => $product->stock - $itemQuantity,
+                'onCart' => $result
             ]);
         }
 

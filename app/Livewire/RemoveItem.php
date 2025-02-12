@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 
 class RemoveItem extends Component
 {
@@ -20,6 +21,10 @@ class RemoveItem extends Component
         $product->update([
             'onCart' => $result
         ]);
+
+        // Binding cart to user.
+        $userId = Auth::user()->id;
+        \Cart::session($userId);
 
         $itemQuantity = \Cart::get($this->productId)->quantity;
 

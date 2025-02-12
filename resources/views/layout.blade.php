@@ -28,13 +28,13 @@
                     Produtos<i class="material-icons right">expand_more</i>
                 </a>
             </li>
-            <li><a href="{{route('cart.index')}}">Carrinho</a></li>
             <li><a href="{{route('users.index')}}">Usuários</a></li>
             @guest
               <li><a href="{{route('register')}}">Criar uma Conta</a></li>
               <li><a href="{{route('login')}}"><i class="tiny material-icons right">login</i>Login</a></li>
             @endguest
             @auth
+              <li><a href="{{route('cart.index')}}">Carrinho</a></li>
               <li><a href="{{route('profile.edit')}}">Gerenciar Conta</a></li>
               <li>
                 <a href="#" 

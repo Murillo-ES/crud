@@ -20,15 +20,17 @@ Route::get('users', [UserController::class, 'index'])->name('users.index');
 Route::get('/user/{id}', [UserController::class, 'details'])->name('user.details');
 
 // Cart
-Route::any('cart', [CartController::class, 'index'])->name('cart.index');
-Route::name('cart.')->group(function(){
-    Route::post('cart/addProduct', [CartController::class, 'addProduct'])->name('addProduct');
-    Route::post('cart/clear', [CartController::class, 'clear'])->name('clear');
-    Route::post('cart/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::middleware('auth')->group(function () {
+    Route::any('cart', [CartController::class, 'index'])->name('cart.index');
+    Route::name('cart.')->group(function () {
+        Route::post('cart/addProduct', [CartController::class, 'addProduct'])->name('addProduct');
+        Route::post('cart/clear', [CartController::class, 'clear'])->name('clear');
+        Route::post('cart/checkout', [CartController::class, 'checkout'])->name('checkout');
+});
 });
 
 // Downloads
-Route::name('download.')->group(function(){
+Route::name('download.')->group(function () {
     Route::get('download/csv', [DownloadController::class, 'downloadCsv'])->name('csv');
     Route::get('download/pdf', [DownloadController::class, 'downloadPdf'])->name('pdf');
 });
