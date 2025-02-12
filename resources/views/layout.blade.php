@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     @livewireStyles
-    {{-- @vite('resources/css/app.css') --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body>
@@ -48,9 +47,10 @@
               </li>
             @endauth
           </ul>
-          <form action="{{route('products.search')}}" method="GET">
+          <form action="{{route('products.search')}}" method="POST">
+            @csrf
             <div class="input-field right">
-              <input id="search" name="searchInput" type="search" required placeholder="Digite um nome!">
+              <input id="search" name="searchInput" type="search" required placeholder="Busque um produto!">
               <label class="label-icon right" for="search"><i class="material-icons">search</i></label>
               <i class="material-icons">close</i>
             </div>

@@ -62,11 +62,12 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         try {
-            $product = Product::where('name', $request->searchInput)->firstOrFail();
+            $product = Product::where('name', 'like', '%' . $request->searchInput . '%')->firstOrFail();
 
-            return view('products.show', compact('product'));
+            return redirect()->route('products.show', $product->id);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return redirect()->route('products.index')->with('Falhou!', "Não temos um produto com esse nome! Que tal criá-lo agora?");
         }
     }
+
 }

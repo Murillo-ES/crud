@@ -37,7 +37,7 @@ Route::name('download.')->group(function () {
 
 // Products
 Route::resource('products', ProductController::class);
-Route::get('products/search', [ProductController::class, 'search'])->name('products.search');
+Route::post('products/search', [ProductController::class, 'search'])->name('products.search');
 
 // Dashboard
 Route::get('/dashboard', function () {
