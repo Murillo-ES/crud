@@ -147,7 +147,9 @@ To set up and run this project locally, follow these steps:
 
 ## Usage
 
-- Manage products (add, edit, delete, and view them in a paginated list).
+- Create and log in to your account.
+- Create a product, manage it's information and delete them.
+- View products and users in paginated lists.
 - Sort and filter products based on different criteria.
 - View users and the products they are currently linked to.
 - Add products to the cart and adjust the quantity before checkout.
