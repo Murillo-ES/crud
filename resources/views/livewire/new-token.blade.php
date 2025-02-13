@@ -40,5 +40,11 @@
                 <i class="material-icons left">api</i> Novo Token
             </button>
         </form>
+
+        <br>
+
+        <p class="center-align">
+            Já tem um token? Verifique como usar o API clicando <a href="{{ route('apiDocs') }}">aqui</a>.
+        </p>
     </div>
 </div>

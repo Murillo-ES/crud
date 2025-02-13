@@ -39,6 +39,9 @@ Route::name('download.')->group(function () {
 Route::resource('products', ProductController::class);
 Route::post('products/search', [ProductController::class, 'search'])->name('products.search');
 
+// API Documentation
+Route::view('/apidocs', 'api-docs')->middleware('auth')->name('apiDocs');
+
 // Dashboard
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -69,6 +69,12 @@
                     </button>
                 </form>
             </div>
+
+            <div class="col s12 m4">
+                <a href="{{ route('apiDocs') }}" class="btn-large blue darken-4 waves-effect waves-light">
+                    <i class="material-icons left">api</i> Documentação API
+                </a>
+            </div>
         </div>
     </div>
 @endauth
@@ -81,14 +87,15 @@
     <div class="container">
       <div class="row">
         <div class="col l6 s12">
-          <h5 class="white-text">Footer Content</h5>
-          <p class="grey-text text-lighten-4">Text goes here.</p>
+          <h5 class="white-text">e-Commerce Project</h5>
+          <p class="grey-text text-lighten-4">Projeto Laravel criado por Murillo Euflausino dos Santos.</p>
         </div>
         <div class="col l4 offset-l2 s12">
           <h5 class="white-text">Links</h5>
           <ul>
-            <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-            <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+            <li><a class="grey-text text-lighten-3" href="https://www.linkedin.com/in/murillo-euflausino/">Linkedin</a></li>
+            <li><a class="grey-text text-lighten-3" href="https://github.com/Murillo-ES">GitHub - Murillo-ES</a></li>
+            <li><a class="grey-text text-lighten-3" href="https://github.com/Murillo-ES/crud">GitHub - Projeto</a></li>
           </ul>
         </div>
       </div>
@@ -96,7 +103,7 @@
     <div class="footer-copyright">
       <div class="container">
       © {{ date('Y') }} Copyright Text
-      <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+      <a class="grey-text text-lighten-4 right" href="https://laravel.com/docs/11.x">Laravel 11 Docs</a>
       </div>
     </div>
 </footer>
