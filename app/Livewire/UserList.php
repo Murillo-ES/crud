@@ -13,6 +13,8 @@ class UserList extends Component
     public $searchInput = '';
     public $error = '';
 
+    public $sortAsc = false;
+
     // Reset pagination when search input is updated
     public function updatedSearchInput()
     {
@@ -25,6 +27,12 @@ class UserList extends Component
 
         if (!empty($this->searchInput)) {
             $query->where('name', 'like', '%' . $this->searchInput . '%');
+        }
+
+        if ($this->sortAsc) {
+            $query->withCount('products')->orderBy('products_count', 'asc');   
+        } else {
+            $query->withCount('products')->orderBy('products_count', 'desc');
         }
 
         $users = $query->paginate(10);

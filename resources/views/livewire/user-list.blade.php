@@ -1,7 +1,7 @@
 <div>
     <div class="row">
         <form class="col s12">
-            <div class="input-field col s12">
+            <div class="input-field col s4">
                 <input placeholder="Busque um usuário!" id="searchInput" type="text" wire:model.live="searchInput" class="center-align">
                 <label class="label-icon right" for="searchInput"><i class="material-icons">search</i></label>
             </div>
@@ -24,7 +24,7 @@
                 <tr>
                     <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Nome de Usuário</th>
                     <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Data de Cadastro</th>
-                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Quantidade de Produtos</th>
+                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black"><a href="#" wire:click.prevent="$toggle('sortAsc')">Quantidade de Produtos {{ $sortAsc ? '🠋' : '🠉'}}</a></th>
                     <th class="border border-bottom-gray-300 dark:border-gray-600 px-4 py-2"></th>
                 </tr>
             </thead>
