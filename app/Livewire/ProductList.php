@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Attributes\Url;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Product;
@@ -17,6 +18,17 @@ class ProductList extends Component
     #[Url]
     public $order = 'desc';
 
+    #[Validate('numeric', message: 'Valor inválido.')]
+    public $minPrice;
+
+    #[Validate('numeric', message: 'Valor inválido.')]
+    public $maxPrice;
+
+    public function valueFilter()
+    {
+        $this->resetPage();
+    }
+
     public function orderProducts($sort, $order = null)
     {
         $this->sort = $sort;
@@ -29,11 +41,21 @@ class ProductList extends Component
     protected $queryString = [
         'sort' => ['except' => 'latest'],
         'order' => ['except' => 'desc'],
+        'minPrice' => ['except' => ''],
+        'maxPrice' => ['except' => ''],
     ];
 
     public function render()
     {
         $query = Product::query();
+
+        if ($this->minPrice != '') {
+            $query->where('price', '>', $this->minPrice);
+        }
+
+        if ($this->maxPrice != '') {
+            $query->where('price', '<', $this->maxPrice);
+        }
 
         if ($this->sort == 'latest') {
             $query->latest();
