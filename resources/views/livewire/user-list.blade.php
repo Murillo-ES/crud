@@ -22,9 +22,9 @@
         <table class="min-w-full table-auto border-collapse border border-gray-300 dark:border-gray-600 highlight centered">
             <thead>
                 <tr>
-                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Nome de Usuário</th>
-                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Data de Cadastro</th>
-                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black"><a href="#" wire:click.prevent="$toggle('sortAsc')">Quantidade de Produtos {{ $sortAsc ? '🠋' : '🠉'}}</a></th>
+                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black"><a href="#" wire:click.prevent="$toggle('nameAsc')" style="color: black">Nome de Usuário {{ $sortByName ? ($nameAsc ? '🠋' : '🠉') : ''}}</a></th>
+                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black"><a href="#" wire:click.prevent="$toggle('dateAsc')" style="color: black">Data do Cadastro {{ $sortByDate ? ($dateAsc ? '🠋' : '🠉') : ''}}</a></th>
+                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black"><a href="#" wire:click.prevent="$toggle('productsAsc')" style="color: black">Quantidade de Produtos {{ $sortByProducts ? ($productsAsc ? '🠋' : '🠉') : ''}}</a></th>
                     <th class="border border-bottom-gray-300 dark:border-gray-600 px-4 py-2"></th>
                 </tr>
             </thead>

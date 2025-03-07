@@ -15,8 +15,10 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::factory()
-            ->has(Product::factory()->count(3))
             ->count(50)
-            ->create();
+            ->create()
+            ->each(function ($user) {
+                $user->products()->saveMany(Product::factory(rand(1, 10))->make());
+            });
     }
 }
