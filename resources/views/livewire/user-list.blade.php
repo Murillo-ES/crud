@@ -6,6 +6,14 @@
                 <label class="label-icon right" for="searchInput"><i class="material-icons">search</i></label>
             </div>
         </form>
+
+        @if ($sortByName || $sortByDate || $sortByProducts)
+            <div>
+                <strong>Ordenando por:</strong> {{ $sortByName ? 'Nome de Usuário' : ($sortByDate ? 'Data do Cadastro' : ($sortByProducts ? 'Quantidade de Produtos' : ''))}}
+
+                <a href="#" wire:click="resetOrder" class="waves-effect waves-light btn-small blue darken-4">Resetar</a>
+            </div>
+        @endif
     </div>
 
     @if ($users->isEmpty())

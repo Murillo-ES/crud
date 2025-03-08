@@ -28,6 +28,18 @@ class UserList extends Component
         $this->resetPage();
     }
 
+    public function resetOrder()
+    {
+        $this->reset([
+            'nameAsc',
+            'sortByName',
+            'dateAsc',
+            'sortByDate',
+            'productsAsc',
+            'sortByProducts'
+        ]);
+    }
+
     public function updated($property)
     {
         if ($property === 'nameAsc') {
