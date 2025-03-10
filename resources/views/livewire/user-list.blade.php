@@ -17,32 +17,32 @@
     </div>
 
     @if ($users->isEmpty())
-        <table class="min-w-full table-auto border-collapse border border-gray-300 dark:border-gray-600 highlight centered">
+        <table class="min-w-full highlight centered">
             <thead>
                 <tr>
-                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Nenhum usuário localizado!</th>
+                    <th>Nenhum usuário localizado!</th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
     @else
-        <table class="min-w-full table-auto border-collapse border border-gray-300 dark:border-gray-600 highlight centered">
+        <table class="min-w-full highlight centered">
             <thead>
                 <tr>
-                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black"><a href="#" wire:click.prevent="$toggle('nameAsc')" style="color: black">Nome de Usuário {{ $sortByName ? ($nameAsc ? '🠋' : '🠉') : ''}}</a></th>
-                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black"><a href="#" wire:click.prevent="$toggle('dateAsc')" style="color: black">Data do Cadastro {{ $sortByDate ? ($dateAsc ? '🠋' : '🠉') : ''}}</a></th>
-                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black"><a href="#" wire:click.prevent="$toggle('productsAsc')" style="color: black">Quantidade de Produtos {{ $sortByProducts ? ($productsAsc ? '🠋' : '🠉') : ''}}</a></th>
-                    <th class="border border-bottom-gray-300 dark:border-gray-600 px-4 py-2"></th>
+                    <th><a href="#" wire:click.prevent="$toggle('nameAsc')" style="color: black">Nome de Usuário {{ $sortByName ? ($nameAsc ? '🠋' : '🠉') : ''}}</a></th>
+                    <th><a href="#" wire:click.prevent="$toggle('dateAsc')" style="color: black">Data do Cadastro {{ $sortByDate ? ($dateAsc ? '🠋' : '🠉') : ''}}</a></th>
+                    <th><a href="#" wire:click.prevent="$toggle('productsAsc')" style="color: black">Quantidade de Produtos {{ $sortByProducts ? ($productsAsc ? '🠋' : '🠉') : ''}}</a></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($users as $user)
                     <tr wire:key="{{ $user->id }}">
-                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">{{ $user->name }}</td>
-                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">{{$user->created_at->format('d/m/Y')}}</td>
-                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">{{count($user->products)}}</td>
-                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                        <td>{{ $user->name }}</td>
+                        <td>{{$user->created_at->format('d/m/Y')}}</td>
+                        <td>{{count($user->products)}}</td>
+                        <td>
                             <a href="{{route('user.details', $user->id)}}" class="waves-effect waves-light btn-small blue darken-4">
                                 Visualizar Usuário<i class="material-icons right">info</i></a>
                         </td>              

@@ -25,7 +25,7 @@
                 </div>
             @endif
 
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 text-black">
+        <div>
             <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4" style="text-align: center">Seu Carrinho</h3>
             <a href="{{route('download.csv')}}" class="waves-effect waves-light btn blue darken-4">
                 Exportar Carrinho (CSV)<i class="material-icons right">download</i>
@@ -33,29 +33,34 @@
             <a href="{{route('download.pdf')}}" class="waves-effect waves-light btn blue darken-4">
                 Exportar Carrinho (PDF)<i class="material-icons right">download</i>
             </a>
+        </div>
 
-            <table class="min-w-full table-auto border-collapse border border-gray-300 dark:border-gray-600 centered">
+        <br>
+
+        </div>
+            <table class="min-w-full centered">
                 <thead>
                     <tr>
-                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Nome</th>
-                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Descrição</th>
-                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Quantidade</th>
-                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Preço Total</th>
-                        <th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">Remover Itens</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Quantidade</th>
+                        <th>Preço Total</th>
+                        <th>Remover Itens</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @foreach ($items as $item)
                         <tr>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">
+                            <td>
                                 <a href="{{route('products.index', $item->id)}}"><strong>{{$item->name}}</strong></a><br>
                             </td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">{{ $item->attributes->description }}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">{{ $item->quantity }}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">
+                            <td>{{ $item->attributes->description }}</td>
+                            <td>{{ $item->quantity }}</td>
+                            <td>
                                 R$ {{ number_format($item->getPriceSum(), 2, ',', '.') }}
                             </td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-black">
+                            <td>
                                 @livewire('remove-item', [
                                     'productId' => $item->id,
                                     'quantity' => $item->quantity
@@ -65,7 +70,13 @@
                     @endforeach
                 </tbody>
             </table>
-            <p style="text-align: center"><strong>Valor total da compra:</strong> R$ {{number_format(Cart::getTotal(), 2, ',', '.')}}</p>
+
+            <br>
+
+            @if (count($items) != 0)
+                <p style="text-align: center"><strong>Valor total da compra:</strong> R$ {{number_format(Cart::getTotal(), 2, ',', '.')}}</p>
+            @endif
+
             <form action="{{route('cart.clear')}}" method="POST">
                 @csrf
                 @foreach ($items as $item)
